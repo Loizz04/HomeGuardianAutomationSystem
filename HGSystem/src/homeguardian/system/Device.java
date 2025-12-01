@@ -7,7 +7,8 @@ public class Device {
 	
 	/**
 	 * Name: Nosizo Mabuza
-	 * Date Implimented : Nov 13th, 2025
+	 * Date Implimented : Nov 1th, 2025
+	 * Revised by: Rawan Genina Decmber 2025
 	 * Date Tested: Nov 17th, 2025
 	 */
 	
