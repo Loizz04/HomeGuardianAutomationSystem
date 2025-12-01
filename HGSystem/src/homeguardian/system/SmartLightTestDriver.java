@@ -22,6 +22,13 @@ import java.util.List;
  * - lightID: ID of the SmartLight device.
  * - lightName: Name of the SmartLight device.
  */
+
+/**
+ * Author: Rawan Genina
+ * Student Number: 1196208
+ * 
+ * changed a bit to this file 
+ */
 public class SmartLightTestDriver {
 
     public static void main(String[] args) {

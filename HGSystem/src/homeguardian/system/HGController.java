@@ -7,6 +7,12 @@ package homeguardian.system;
 // Description: Controller class for managing devices, users, activity logs, and notifications
 // in the Home Guardian system.
 
+/**
+ * Author: Rawan Genina
+ * Student Number: 1196208
+ * 
+ *added the device removal method 
+ */
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -64,6 +70,20 @@ public class HGController {
                 .filter(d -> d.getDeviceID().equals(deviceID))
                 .findFirst();
     }
+    
+    // -------------------- DEVICE REMOVAL --------------------
+    public boolean removeDevice(String deviceID) {
+        Optional<Device> deviceOpt = findDeviceByID(deviceID);
+        if (deviceOpt.isEmpty()) {
+            logActivity("Device with ID " + deviceID + " not found for removal.");
+            return false;
+        }
+        Device device = deviceOpt.get();
+        deviceList.remove(device);
+        logActivity("Device removed: " + device.getDeviceName() + " (" + deviceID + ")");
+        return true;
+    }
+
 
     // -------------------- USER MANAGEMENT --------------------
     public void addUser(User user) {
