@@ -1,129 +1,130 @@
 package homeguardian.system;
 
-// updated file 
-/**
- * Name: Nosizo Mabuza
- * Date Implemented: Nov 1st, 2025
- * Revised by: Rawan Genina December 1st, 2025
- * Date Tested: Nov 17th, 2025
- *
- * Description: Represents a system notification or alert intended for a specific user
- * or a general event. It manages details like the recipient, message, timestamp,
- * and tracks the user's notification preferences (enabled/disabled) and contact information.
- *
- * --ATTRIBUTES
- * notificationID: String   | A unique identifier for the notification.
- * userID: String           | The ID of the user the notification is targeted for.
- * timeStamp: LocalDateTime | The time the notification was created.
- * isEnabled: boolean       | Indicates whether notifications are currently enabled for this user.
- * userEmail: String        | The user's email address for sending alerts.
- * recipient: User          | The User object (can be null for system/global alerts).
- * message: String          | The content of the notification.
- *
- * --METHODS
- * Notification(recipient: User, message: String, isEnabled: boolean, userEmail: String) | Constructor.
- * Notification(recipient: User, message: String)                                       | Convenience constructor.
- * isEnabled(): boolean          | Checks if notifications are enabled for the recipient.
- * sendAlert(): boolean          | Simulates sending an alert (e.g., to email/app).
- * getEmail(): String            | Returns the user's email address.
- * setEmail(email: String): void | Sets the user's email address.
- * getRecipient(): User          | Getter for the recipient User object.
- * getMessage(): String          | Getter for the notification message.
- */
-
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
-public class Notification {
+/**
+ * Name: Nosizo Mabuza
+ * Revised by: Rawan Genina
+ * Date Implemented: Nov 1st, 2025
+ * Date Revised: Dec 1st, 2025
+ *
+ * Description:
+ * Represents a system notification or alert intended for a specific user
+ * or a general system/emergency event. Tracks:
+ *  - target user (or system/global)
+ *  - message content
+ *  - timestamp
+ *  - user email for delivery
+ *  - whether notifications are enabled
+ *  - unique notification ID
+ *
+ * --ATTRIBUTES (Design Document)
+ * notificationID: String
+ * userID: String
+ * timeStamp: LocalDateTime
+ * isEnabled: boolean
+ * userEmail: String
+ * recipient: User
+ * message: String
+ *
+ * --METHODS
+ * Notification(recipient, message, isEnabled, userEmail)
+ * Notification(recipient, message)
+ * isEnabled()
+ * sendAlert()
+ * getEmail()
+ * setEmail()
+ * getRecipient()
+ * getMessage()
+ */
 
-    // New Required Attributes
+public class Notification implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+    // -------------------------
+    // ATTRIBUTES
+    // -------------------------
     private final String notificationID;
     private final String userID;
     private final LocalDateTime timeStamp;
-    private boolean isEnabled; // Tracks user preference for this type of notification/user
+
+    private boolean isEnabled;
     private String userEmail;
 
-    // Existing Attributes
-    private final User recipient; // can be null for emergency/global
+    private final User recipient;   // Can be null (SYSTEM/global alert)
     private final String message;
 
+    // -------------------------
+    // FULL CONSTRUCTOR
+    // -------------------------
     /**
-     * Full constructor for a new Notification.
-     *
-     * @param recipient The target User object (can be null).
-     * @param message   The content of the notification.
-     * @param isEnabled Initial notification status for the user.
-     * @param userEmail The user's primary contact email.
+     * Full constructor (design-specified)
      */
     public Notification(User recipient, String message, boolean isEnabled, String userEmail) {
         this.recipient = recipient;
         this.message = message;
 
-        // Initialization of New Attributes
         this.notificationID = UUID.randomUUID().toString();
         this.timeStamp = LocalDateTime.now();
         this.isEnabled = isEnabled;
         this.userEmail = userEmail;
+
+        // userID = username OR “SYSTEM”
         this.userID = (recipient != null) ? recipient.getUsername() : "SYSTEM";
     }
 
+    // -------------------------
+    // CONVENIENCE CONSTRUCTOR
+    // -------------------------
     /**
-     * Convenience constructor used by HGController: defaults to enabled, with a placeholder email.
-     *
-     * @param recipient The target User object (can be null).
-     * @param message   The content of the notification.
+     * Simple constructor used by controller (enabled + placeholder email)
      */
     public Notification(User recipient, String message) {
         this(recipient, message, true, "unknown@example.com");
     }
 
+    // -------------------------
     // METHODS
+    // -------------------------
 
-    /**
-     * Returns the current enabled status for this notification type/user.
-     *
-     * @return true if notifications are enabled, false otherwise.
-     */
+    /** Checks if notification is enabled */
     public boolean isEnabled() {
         return isEnabled;
     }
 
     /**
-     * Simulates sending the alert.
-     * In a real system, this would trigger an email, push notification, or SMS.
-     *
-     * @return true if the alert was conceptually sent, false if disabled.
+     * Simulates sending an alert.
+     * Returns true if sent, false if disabled.
      */
     public boolean sendAlert() {
         if (!isEnabled) {
-            System.out.println("[" + getTimestampFormatted() + "] ALERT DISABLED for User " + userID + ": " + message);
+            System.out.println("[" + getTimestampFormatted() + "] ALERT DISABLED for User "
+                    + userID + ": " + message);
             return false;
         }
 
-        String recipientInfo = (recipient != null) ? recipient.getName() : "System/Global";System.out.println("--- ALERT SENT ---");
+        String recipientInfo = (recipient != null) ? recipient.getName() : "System/Global";
+
+        System.out.println("--- ALERT SENT ---");
         System.out.println("ID: " + notificationID);
         System.out.println("To: " + recipientInfo + " | Email: " + userEmail);
         System.out.println("Time: " + getTimestampFormatted());
         System.out.println("Message: " + message);
         System.out.println("------------------");
+
         return true;
     }
 
-    /**
-     * Retrieves the user's current email address.
-     *
-     * @return the email string.
-     */
+    /** Returns the current email on file */
     public String getEmail() {
         return userEmail;
     }
 
-    /**
-     * Sets a new email address for the user.
-     *
-     * @param email The new email address.
-     */
+    /** Updates the user's email string */
     public void setEmail(String email) {
         if (email != null && !email.trim().isEmpty()) {
             this.userEmail = email;
@@ -131,7 +132,9 @@ public class Notification {
         }
     }
 
-    // GETTERS FOR NEW ATTRIBUTES
+    // -------------------------
+    // GETTERS (Design-Specified)
+    // -------------------------
 
     public String getNotificationID() {
         return notificationID;
@@ -149,8 +152,6 @@ public class Notification {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         return timeStamp.format(formatter);
     }
-
-    // GETTERS
 
     public User getRecipient() {
         return recipient;
