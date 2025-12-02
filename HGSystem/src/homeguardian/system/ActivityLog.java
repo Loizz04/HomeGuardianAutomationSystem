@@ -31,6 +31,17 @@ package homeguardian.system;
 
     public long getTimestamp() {
         return timestamp;
+        
+        BUT:
+ *  - The client GUI is expected to use ONLY:
+ *      - deviceName
+ *      - actionType
+ *      - date & time (formatted)
+ *  - Use:
+ *      - getDeviceName()
+ *      - getActionType()
+ *      - getFormattedDateTime()
+ *    when sending data to the client.
     }*/
 	
 	
@@ -38,7 +49,7 @@ package homeguardian.system;
 	import java.util.ArrayList;
 	import java.util.Date;
 	import java.util.List;
-
+	import java.text.SimpleDateFormat; // Added so the client can receive a date and time message
 	/**
 	 * Represents a single activity entry within the Home Guardian system.
 	 * Attributes: logID, user, actionType, deviceName, deviceID, message, timestamp.
@@ -79,10 +90,108 @@ package homeguardian.system;
 	        logActivity(this); // Automatically store the log
 	    }
 
+	   
+	    
+	    /**
+	     * Convenience constructor – used by HGController and others
+	     * when only a message is given.
+	     *
+	     * Defaults:
+	     *  user       = "SYSTEM/UNKNOWN"
+	     *  actionType = "Basic Log"
+	     *  deviceName = "N/A"
+	     *  deviceID   = "N/A"
+	     */
 	    public ActivityLog(String message) {
 	        this("SYSTEM/UNKNOWN", "Basic Log", "N/A", "N/A", message);
 	    }
+	    
+	 // -------------------------
+	    // GETTERS
+	    // -------------------------
 
+	    public String getLogID() {
+	        return logID;
+	    }
+
+	    public String getUser() {
+	        return user;
+	    }
+
+	    /**
+	     * This is one of the key fields the client GUI cares about.
+	     */
+	    public String getActionType() {
+	        return actionType;
+	    }
+
+	    /**
+	     * This is one of the key fields the client GUI cares about.
+	     */
+	    public String getDeviceName() {
+	        return deviceName;
+	    }
+
+	    public String getDeviceID() {
+	        return deviceID;
+	    }
+
+	    public String getMessage() {
+	        return message;
+	    }
+
+	    public Date getTimeStamp() {
+	        return timeStamp;
+	    }
+
+	    public long getTimestamp() {
+	        return timestamp;
+	    }
+
+	    /**
+	     * Formatted date & time string for the GUI.
+	     * Example: "2025-12-02 14:35:10"
+	     */
+	    public String getFormattedDateTime() {
+	        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	        return sdf.format(timeStamp);
+	    }
+
+	    // -------------------------
+	    // STATIC OPERATIONS
+	    // -------------------------
+
+	    /**
+	     * Store a log entry in the central store and print a concise line.
+	     *
+	     * NOTE: Printing is also restricted to what the client essentially cares about:
+	     *   - Device name
+	     *   - Action type
+	     *   - Date & time
+	     */
+	    public static void logActivity(ActivityLog logEntry) {
+	        logStore.add(logEntry);
+
+	        System.out.println(
+	            "LOGGING -> Device: " + logEntry.getDeviceName()
+	            + " | Action: " + logEntry.getActionType()
+	            + " | DateTime: " + logEntry.getFormattedDateTime()
+	        );
+	    }
+
+	    /**
+	     * Return all logs as an unmodifiable copy.
+	     * The server can then map each ActivityLog into the three fields
+	     * the GUI needs:
+	     *   - getDeviceName()
+	     *   - getActionType()
+	     *   - getFormattedDateTime()
+	     */
+	    public static List<ActivityLog> getAllLogs() {
+	        return List.copyOf(logStore);
+	    }
+	}
+/**
 	    // -------------------------
 	    // GETTERS
 	    // -------------------------
@@ -99,7 +208,7 @@ package homeguardian.system;
 	    // STATIC OPERATIONS
 	    // -------------------------
 
-	    /** Store a log entry and print to console */
+	    // Store a log entry and print to console 
 	    public static void logActivity(ActivityLog logEntry) {
 	        logStore.add(logEntry);
 	        System.out.println("LOGGING: [" + logEntry.getTimeStamp() + "] " + logEntry.getLogID() +
@@ -109,12 +218,12 @@ package homeguardian.system;
 	                " | Message: " + logEntry.getMessage());
 	    }
 
-	    /** Return all logs as an unmodifiable list */
+	    // Return all logs as an unmodifiable list 
 	    public static List<ActivityLog> getAllLogs() {
 	        return List.copyOf(logStore);
 	    }
-	
+	}
+*/
+	    
+	    
 
-
-	
-}
