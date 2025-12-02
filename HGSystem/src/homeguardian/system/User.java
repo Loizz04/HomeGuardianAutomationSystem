@@ -109,7 +109,15 @@ public abstract class User {
     public boolean verifyUser(String email) {
         return this.email.equals(email);
     }
+    
+   
+    public String getUserId() {
+        return username; // or some other ID logic
+    }
 
+    public String getUserName() {
+        return name;     // or combine name + username, etc.
+    }
     // -------------------------
     // LOGGING SUPPORT
     // -------------------------
