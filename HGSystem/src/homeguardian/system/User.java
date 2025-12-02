@@ -7,13 +7,24 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
-// updated user 
 /**
  * Author: Rawan Genina
  * Student Number: 1196208
- * Base User Class
- * Represents any user in the Home Guardian system.
- * Extended by HomeAdmin and HomeGuest.
+ * 
+ * Class: User
+ * 
+ * Description:
+ * The User class is the abstract base representation of any account within the
+ * HomeGuardian smart home system. It is extended by HomeAdmin and HomeGuest to
+ * provide role-specific behavior.
+ * 
+ * This class manages:
+ *   - Core identity fields (name, username, email)
+ *   - Secure password hash storage
+ *   - Basic authentication methods (login, logout, signup)
+ *   - User verification via email
+ *   - A personal activity log recording all user actions
+ *
  */
 public abstract class User {
 

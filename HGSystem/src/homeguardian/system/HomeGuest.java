@@ -4,8 +4,24 @@ package homeguardian.system;
  * Author: Rawan Genina
  * Student Number: 1196208
  * 
+ * Class: HomeGuest
  * 
- *
+ * Description:
+ * The HomeGuest class represents a guest user within the HomeGuardian smart
+ * home system. Unlike HomeAdmin, a guest has limited permissions and may only
+ * interact with devices that have been explicitly assigned to them by an admin.
+ * 
+ * This class extends the User base class and adds functionality specific to
+ * guest accounts, including:
+ * 
+ *  - Storing a list of accessible devices
+ *  - Allowing login attempts through the inherited authentication system
+ *  - Maintaining an optional guest-specific lock passcode for SmartLock devices
+ *  - Supporting logs of guest actions through the base User activity log
+ * 
+ * A guest cannot manage other users or modify system-level configurations. 
+ * Their capabilities are restricted to using assigned devices and interacting
+ * with the smart home environment within the permissions granted by admins.
  */
 
 import java.util.ArrayList;

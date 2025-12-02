@@ -5,8 +5,25 @@ package homeguardian.system;
  * Author: Rawan Genina
  * Student Number: 1196208
  * 
+ * Class: HomeAdmin
+ * 
+ * Description:
+ * The HomeAdmin class represents an administrative user within the HomeGuardian
+ * smart home system. An admin has elevated privileges compared to regular users 
+ * and is responsible for managing guests, devices, and security access.
+ * 
+ * This class extends the User base class and introduces additional 
+ * administrative functionality, including:
+ * 
+ *  - Creating guest accounts (HomeGuest objects)
+ *  - Assigning devices to guest users
+ *  - Revoking device access from guests
+ *  - Generating or updating a guest-specific lock passcode
+ *  - Tracking actions through the inherited user activity log
+ * 
+ * HomeAdmin acts as the main authority for user management and access control
+ * within the system.
  */
-
 import java.util.List;
 
 public class HomeAdmin extends User {
